@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>ドラッグ＆ドロップ テスト</title>
+<meta name="description" content="">
+
+<!-- stylesheet -->
+<link rel="stylesheet" href="css/reset.css">
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"> -->
+<link rel="stylesheet" href="css/test.css">
+
+<noscript>
+<link rel="stylesheet" href="css/noscript.css">
+</noscript>
+
+</head>
+<body>
+
+<div id="dad">
+  <div id="dad__1">
+    
+    <div class="dad_nav_1">
+      <p class="dad_nav_1__h1">
+        未設定
+      </p>
+      <div id="category__null" class="dad_nav_1__items">
+        <!-- 
+        <span class="dad_tag_1">はげ１</span>
+        <span class="dad_tag_1">はげ２</span>
+        <span class="dad_tag_1">はげ３</span>
+        <span class="dad_tag_1">はげ４</span>
+         -->
+      </div>
+    </div><!-- /.dad_nav_1 -->
+    
+  </div>
+  <div id="dad__2">
+    
+    <div class="dad_list_1">
+      <div class="dad_list_1__items">
+        
+        <div class="dad_list_1__item">
+          <div class="dad_category_1" data-category="1">
+            <div class="dad_category_1__name">
+              カテゴリ
+            </div>
+            <div class="dad_category_1__content">
+              <div class="dad_category_1__1">
+                <div id="category__1" class="dad_category_1__items">
+                  <!-- 
+                  <span class="dad_tag_1 is_star is_on">ほげ１</span>
+                  <span class="dad_tag_1 is_star">ほげ２</span>
+                  <span class="dad_tag_1">ほげ３</span>
+                  <span class="dad_tag_1">ほげ４</span>
+                   -->
+                </div>
+              </div>
+            </div>
+          </div><!-- /.dad_category_1 -->
+        </div>
+        <div class="dad_list_1__item">
+          <div class="dad_category_1" data-category="2">
+            <div class="dad_category_1__name">
+              カテゴリ
+            </div>
+            <div class="dad_category_1__content">
+              <div class="dad_category_1__1">
+                <div id="category__2" class="dad_category_1__items">
+                  <!-- 
+                  <span class="dad_tag_1 is_star is_on">ふが１</span>
+                  <span class="dad_tag_1 is_star">ふが２</span>
+                  <span class="dad_tag_1">ふが３</span>
+                  <span class="dad_tag_1">ふが４</span>
+                   -->
+                </div>
+              </div>
+            </div>
+          </div><!-- /.dad_category_1 -->
+        </div>
+        <div class="dad_list_1__add">
+          <input type="text" value="" placeholder="カテゴリ名" />
+        </div>
+        <div class="dad_list_1__item">
+          <div class="dad_add_1">＋</div>
+        </div>
+      </div>
+    </div><!-- /.dad_list_1 -->
+    
+  </div>
+</div><!-- /#dad -->
+
+<!-- javascript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js"></script>
+
+<script src="test.js"></script>
+
+<script type="text/template" id="template_dad_tag_1">
+  <span class="<%- klass %>"><%- name %></span>
+</script>
+<!--  is_on -->
+
+</body>
+</html>
