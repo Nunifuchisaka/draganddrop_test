@@ -5,55 +5,65 @@
 $(function(){
   
   var view = new View({
-    collection: new Collection([{
-      name: "はげ１",
-      star: false,
-      category: "null"
-    }, {
-      name: "はげ２",
-      star: false,
-      category: "null"
-    }, {
-      name: "はげ３",
-      star: false,
-      category: "null"
-    }, {
-      name: "はげ４",
-      star: false,
-      category: "null"
-    }, {
-      name: "ほげ１",
-      star: true,
-      category: "1"
-    }, {
-      name: "ほげ２",
-      star: false,
-      category: "1"
-    }, {
-      name: "ほげ３",
-      star: false,
-      category: "1"
-    }, {
-      name: "ほげ４",
-      star: false,
-      category: "1"
-    }, {
-      name: "ふが１",
-      star: true,
-      category: "2"
-    }, {
-      name: "ふが２",
-      star: false,
-      category: "2"
-    }, {
-      name: "ふが３",
-      star: false,
-      category: "2"
-    }, {
-      name: "ふが４",
-      star: false,
-      category: "2"
-    }])
+    el: "#dad",
+    collection: {
+      category: new Category_Collection([{
+        id: "1",
+        name: "カテゴリ１"
+      }, {
+        id: "2",
+        name: "カテゴリ２"
+      }]),
+      tag: new Tag_Collection([{
+        name: "はげ１",
+        star: false,
+        category: "null"
+      }, {
+        name: "はげ２",
+        star: false,
+        category: "null"
+      }, {
+        name: "はげ３",
+        star: false,
+        category: "null"
+      }, {
+        name: "はげ４",
+        star: false,
+        category: "null"
+      }, {
+        name: "ほげ１",
+        star: true,
+        category: "1"
+      }, {
+        name: "ほげ２",
+        star: false,
+        category: "1"
+      }, {
+        name: "ほげ３",
+        star: false,
+        category: "1"
+      }, {
+        name: "ほげ４",
+        star: false,
+        category: "1"
+      }, {
+        name: "ふが１",
+        star: true,
+        category: "2"
+      }, {
+        name: "ふが２",
+        star: false,
+        category: "2"
+      }, {
+        name: "ふが３",
+        star: false,
+        category: "2"
+      }, {
+        name: "ふが４",
+        star: false,
+        category: "2"
+      }])
+    }
   });
   
 });
@@ -61,10 +71,38 @@ $(function(){
 
 
 /*
-## 
+## Category
 */
 
-var Model = Backbone.Model.extend({
+var Category_Model = Backbone.Model.extend({
+  
+  defaults: function(){
+    return {
+      name: ""
+    }
+  },
+  
+  initialize: function(){
+    //_.bindAll(this, "");
+    
+  }
+  
+});
+
+
+var Category_Collection = Backbone.Collection.extend({
+  
+  model: Category_Model
+  
+});
+
+
+
+/*
+## Tag
+*/
+
+var Tag_Model = Backbone.Model.extend({
   
   defaults: function(){
     return {
@@ -79,6 +117,7 @@ var Model = Backbone.Model.extend({
     _.bindAll(this, "reset_klass");
     this.reset_klass();
     this.on("change:star", this.reset_klass);
+    this.on("change:category", this.reset_klass);
   },
   
   reset_klass: function(){
@@ -97,12 +136,17 @@ var Model = Backbone.Model.extend({
 });
 
 
-var Collection = Backbone.Collection.extend({
+var Tag_Collection = Backbone.Collection.extend({
   
-  model: Model
+  model: Tag_Model
   
 });
 
+
+
+/*
+## View
+*/
 
 var View = Backbone.View.extend({
   
@@ -111,16 +155,30 @@ var View = Backbone.View.extend({
     _.bindAll(this, "render", "drop");
     console.log("View");
     
-    console.log( this.collection );
+    console.log("collection", this.collection);
+    //console.log("category", this.collection.category);
+    //console.log("tag", this.collection.tag);
+    
+    this.$categories = $("#dad_categories");
     
     this.$template = {
+      category_1: _.template($("#template_dad_category_1").html()),
       tag_1: _.template($("#template_dad_tag_1").html())
     };
     
     this.$category = {};
     
-    var category = this.collection.pluck("category");
+    var categories_html = _.map(this.collection.category.toJSON(), function(data){
+      var html = self.$template.category_1(data);
+      //console.log("data", data);
+      //console.log("html", html);
+      return html;
+    }).join("");
+    this.$categories.prepend(categories_html);
+    
+    var category = this.collection.category.pluck("id");
     category = _.uniq(category);
+    category.unshift("null");
     console.log("category", category);
     _.each(category, function(_cat){
       self.$category[_cat] = $("#category__" + _cat);
@@ -137,11 +195,11 @@ var View = Backbone.View.extend({
     
     this.render();
     
-    this.$dad_category_1.droppable({
+    $(".js_category_1").droppable({
       drop: this.drop
     });
     
-    this.collection.on("change", this.render);
+    this.collection.tag.on("change", this.render);
   },
   
   drop: function(e, ui) {
@@ -157,7 +215,7 @@ var View = Backbone.View.extend({
     console.log("category", category);
     
     var name = $draggable.text(),
-        model = this.collection.findWhere({"name": name});
+        model = this.collection.tag.findWhere({"name": name});
     console.log("name", name);
     console.log("model", model);
     model.set("category", category);
@@ -177,10 +235,9 @@ var View = Backbone.View.extend({
       _$cat.empty();
     });
     
-    this.collection.each(function(model){
+    this.collection.tag.each(function(model){
       var category = model.get("category");
       var html = self.$template.tag_1(model.toJSON());
-      console.log(html);
       self.$category[category].append(html);
     });
     
